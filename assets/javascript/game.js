@@ -3,7 +3,7 @@ var pressKeyHTML = document.getElementById("press-key");
 var winsHTML = document.getElementById("wins");
 var remainingGuessesHTML = document.getElementById("remaining-guesses");
 var lettersGuessedHTML = document.getElementById("letters-guessed");
-var word = document.getElementById("word");
+var wordHTML = document.getElementById("word");
 
 //  Array of word choices
 var words = ["blah", "shoop", "noopie", "lalalala"];
@@ -17,6 +17,8 @@ var userGuesses = [];
 //  Check to see if the space bar is pressed to start
 
 //  Choose a word to start off with  ** Beginning **
+var word = words[Math.floor(Math.random() * words.length)];
+wordHTML.textContent = word;
 
 //  Listen for key press and store it as a variable userGuess
 document.onkeyup = function(event) {
@@ -35,6 +37,7 @@ document.onkeyup = function(event) {
     userGuesses.push(userGuess);
     //  Check to see if userGuess is in the word and switch the - to the userGuess
     if(word.indexOf(userGuess) > -1){
+        console.log("The letter " + userGuess + " is in this word")
         //find the indexes of the word and change the character at those indexes, maybe do a wheel of fortune kind of thing and do a for loop
         if(word.indexOf("-") === -1){
             //Change the screen to you win!!!
