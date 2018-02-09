@@ -71,14 +71,9 @@ document.onkeyup = function(event) {
             //game over
         }
     }
-
-    //  If the userGuess is not in the word
     
   } else {
       console.log("The letter " + userGuess + " was already used. Please try again.")
   }
 
 }
-
-
-
