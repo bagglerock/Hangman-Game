@@ -10,7 +10,7 @@ var userGuessesHTML = document.getElementById("letters-guessed");
 var wordHTML = document.getElementById("word");
 
 //  Arrays
-var musicians = ['Dave Matthews Band', 'The Killers', 'Evanescense', 'Adele', 'Cream', 'Styx', 'Metallica', 'Steve Aoki', 'Counting Crows', 'Reel Big Fish', 'The Script'];
+var musicians = ['dave matthews Band', 'the killers', 'evanescense', 'adele', 'cream', 'styx', 'metallica', 'steve Aoki', 'counting Crows', 'reel big fish', 'the script'];
 var lettersGuessed = [];
 
 //  Score variables
@@ -31,10 +31,23 @@ document.onkeyup = function(event) {
     userGuess = event.key.toLowerCase();
     if (!hasBeenGuessed(userGuess)){
         addToLettersGuessed(userGuess);
-        console.log(lettersGuessed);
+        if (wordContains(userGuess)){
+            updateHiddenWord(userGuess);
+            if (wordIsComplete()) {
+                showYouWin();
+            }
+        } else {
+            decreaseRemainingGuesses();
+            if (remainingGuesses === 0) {
+                showYouLose();
+            }
+        }
     } else {
         console.log("Letter " + " has been guessed.  Please try again.")
+        //write something to the screen to say that the letter had been guessed, please try again.
     }
+    console.log(hiddenWord);
+    console.log(remainingGuesses);
 }
 
 //  ** FUNCTIONS **
@@ -42,7 +55,7 @@ document.onkeyup = function(event) {
 //  Initialize Hangman
 function initialize() {
     word = musicians[Math.floor(Math.random() * musicians.length)];
-    for (var i = 0; i < word.length; i++){
+    for (var i = 0; i < word.length; i++) {
         if (word[i] !== " ") {
             hiddenWord = hiddenWord + "- ";
         } else {
@@ -61,43 +74,62 @@ function hasBeenGuessed(userGuess) {
 }
 
 //  Add the key to the lettersGuessed - updates lettersGuessed[]
-function addToLettersGuessed(userGuess){
+function addToLettersGuessed(userGuess) {
     lettersGuessed.push(userGuess);
 }
 
 //  Check to see userGuess is in word - Returns true or false
 function wordContains(userGuess){
-    //  do something
+    if (word.indexOf(userGuess) > -1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 //  Change the hiddenWord - Updates wordHTML
-function updateHiddenWord(key){
-    //do something
+function updateHiddenWord(userGuess) {
+    //  Split the hiddenWord into an array split by spaces
+    hiddenWordArray = hiddenWord.split(" ");
+    for(var i = 0; i < word.length; i++){
+        if (userGuess === word[i]){
+            //  In position i replace 1 array element and replace with userGuess
+            hiddenWordArray.splice(i, 1, userGuess);
+        }
+    }
+    //  Join the array and separate by spaces
+    hiddenWord = hiddenWordArray.join(" ");
 }
 
 //  Update the remaining guesses - updates remainingGuesses
 function decreaseRemainingGuesses() {
-    //  do something
+    remainingGuesses--;
 }
 
 //  Check if word is complete - Returns true or false
-function wordIsComplete(word) {
-    //  do something
+function wordIsComplete() {
+    if(hiddenWord.indexOf("-") === -1){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 //  Check if remainingGuesses === 0 - Return true or false
-function isGameOver(){
+function isGameOver() {
     //  do something
 }
 
 //  Show you lose splash screen and hit any key to begin
-function showYouLose(){
+function showYouLose() {
     losses++;
-    //  do something
+    console.log(losses);
+    console.log("YOU GET NOTHING!!! YOU LOSE!!! GOOD DAY SIR!!!");
 }
 
 //  Show you win splash screen and hit any key to begin
 function showYouWin(){
     wins++;
-    //  do something
+    console.log(wins);
+    console.log("YOU A WINNER!!! HA HA HA!!! YOU A WINNER!!! HA HA HA!!!");
 }
