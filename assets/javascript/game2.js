@@ -1,6 +1,6 @@
 //  ** REDO with functions **
 
-//  ** Set the main values
+//  ** MAIN VALUES **
 
 //  HTML variables
 var pressKeyHTML = document.getElementById("press-key");
@@ -10,40 +10,63 @@ var userGuessesHTML = document.getElementById("letters-guessed");
 var wordHTML = document.getElementById("word");
 
 //  Arrays
-var musician = ['Dave Matthews Band', 'The Killers', 'Evanescense', 'Adele', 'Cream', 'Styx', 'Metallica', 'Steve Aoki', 'Counting Crows', 'Reel Big Fish'];
+var musicians = ['Dave Matthews Band', 'The Killers', 'Evanescense', 'Adele', 'Cream', 'Styx', 'Metallica', 'Steve Aoki', 'Counting Crows', 'Reel Big Fish', 'The Script'];
 var lettersGuessed = [];
 
 //  Score variables
 var wins = 0;
+var losses = 0;
 var remainingGuesses = 10;
 
 //  Other variables
-var userGuess;
-var word;
-var key;
-var hiddenWord = "";
+var userGuess; //  The letter that was pressed as represented by the key
+var word; //  The word that was selected
+var hiddenWord = ""; //  The word represented by "-"'s
 
+//  ** SCRIPT **
 
+initialize();
 
-//  ** Functions **
+document.onkeyup = function(event) {
+    userGuess = event.key.toLowerCase();
+    if (!hasBeenGuessed(userGuess)){
+        addToLettersGuessed(userGuess);
+        console.log(lettersGuessed);
+    } else {
+        console.log("Letter " + " has been guessed.  Please try again.")
+    }
+}
+
+//  ** FUNCTIONS **
 
 //  Initialize Hangman
 function initialize() {
-    //  set all number and make a new word from the array of words
+    word = musicians[Math.floor(Math.random() * musicians.length)];
+    for (var i = 0; i < word.length; i++){
+        if (word[i] !== " ") {
+            hiddenWord = hiddenWord + "- ";
+        } else {
+            hiddenWord = hiddenWord + " ";
+        }
+    }
 }
 
 //  Was the key used? - Returns true or false
-function hasBeenGuessed(key) {
-    // check to see if the key is in lettersGuessed[] array - return true or false
+function hasBeenGuessed(userGuess) {
+    for (var i = 0; i < lettersGuessed.length; i++) {
+        if (userGuess === lettersGuessed[i]) {
+            return true;
+        }
+    }
 }
 
 //  Add the key to the lettersGuessed - updates lettersGuessed[]
-function addToLettersGuessed(key){
-    //  add this new letter to the lettersGuessed array
+function addToLettersGuessed(userGuess){
+    lettersGuessed.push(userGuess);
 }
 
 //  Check to see userGuess is in word - Returns true or false
-function wordContains(key){
+function wordContains(userGuess){
     //  do something
 }
 
@@ -62,24 +85,19 @@ function wordIsComplete(word) {
     //  do something
 }
 
+//  Check if remainingGuesses === 0 - Return true or false
 function isGameOver(){
     //  do something
 }
 
+//  Show you lose splash screen and hit any key to begin
 function showYouLose(){
+    losses++;
     //  do something
 }
 
+//  Show you win splash screen and hit any key to begin
 function showYouWin(){
+    wins++;
     //  do something
 }
-
-
-
-
-
-
-//  Check Key was used - Return true or false
-
-//  TRUE - return message 
-
