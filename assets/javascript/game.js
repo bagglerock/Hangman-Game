@@ -12,7 +12,7 @@ var words = ["blah", "shoop", "noopie", "lalalala"];
 var wins = 0;
 var remainingGuesses = 10;
 var userGuesses = [];
-var tryAgain = false;
+
 
 //  Check to see if the space bar is pressed to start
 
@@ -23,35 +23,36 @@ document.onkeyup = function(event) {
   var userGuess = event.key.toLowerCase();
   console.log("The key that was pressed was " + userGuess);
 
-  //Check to see if userGuess is in the lettersGuessed array
+  //  Check to see if userGuess is in the lettersGuessed array using a tryAgain boolean expression
+  var tryAgain = false;
   for (var i = 0; i < userGuesses.length; i++) {
     if (userGuess === userGuesses[i]) {
         tryAgain = true;
-    } else {
-        tryAgain = false;
     }
   }
+  //  If tryAgain is not true then, add the userGuess to the userGuesses array and check to see if userGuess is in the word
   if(!tryAgain){
     userGuesses.push(userGuess);
-    console.log("The letter " + userGuess + " was NOT used yet.");
-    console.log(userGuesses);
+    //  Check to see if userGuess is in the word and switch the - to the userGuess
+    if(word.indexOf(userGuess) > -1){
+        //find the indexes of the word and change the character at those indexes, maybe do a wheel of fortune kind of thing and do a for loop
+        if(word.indexOf("-") === -1){
+            //Change the screen to you win!!!
+        }
+    } else {
+        remainingGuesses--;
+        if (remainingGuesses === 0){
+            //game over
+        }
+    }
+
+    //  If the userGuess is not in the word
+    
   } else {
-      console.log("The letter " + userGuess + " was already used.")
+      console.log("The letter " + userGuess + " was already used. Please try again.")
   }
 
-
-      //
-      //
-      //lettersGuessedHTML.textContent = lettersGuessed.toString();
 }
 
 
-//If userGuess is not in the lettersGuessed array then check to see if userGuess exists in the word,  update the word and check to see if word is complete
 
-//If the userGuess does not exist in the word then subtract from remainingGuesses
-
-//Check to see if remainingGuesses !== 0
-
-//If remainingGuesses === 0 then end game with game over splash to hit spacebar
-
-//If word is complete then make splash screen to hit space bar
