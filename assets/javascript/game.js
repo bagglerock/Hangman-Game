@@ -3,12 +3,13 @@
 //  ** MAIN VALUES **
 
 //  HTML variables
-var pressKeyHTML = document.getElementById("press-key");
 var winsHTML = document.getElementById("wins");
 var lossesHTML = document.getElementById("losses");
 var remainingGuessesHTML = document.getElementById("remaining-guesses");
-var userGuessesHTML = document.getElementById("letters-guessed");
+var lettersGuessedHTML = document.getElementById("letters-guessed");
 var wordHTML = document.getElementById("word");
+var hiddenWordHTML = document.getElementById("hidden-word")
+var messageHTML = document.getElementById("message");
 
 //  Arrays
 var lettersGuessed = [];
@@ -21,14 +22,14 @@ var musicians = [
   "styx",
   "metallica",
   "steve aoki",
-  "counting Crows",
+  "counting crows",
   "reel big fish",
   "the script"
 ];
 
 //  Variables
-var wins;
-var losses;
+var wins = 0;
+var losses = 0;
 var remainingGuesses;
 var userGuess; //  The letter that was pressed as represented by the key
 var word; //  The word that was selected
@@ -76,23 +77,29 @@ function initialize() {
     if (word[i] !== " ") {
       hiddenWord = hiddenWord + "- ";
     } else {
-      hiddenWord = hiddenWord + " &nbsp;&nbsp; ";
+      hiddenWord = hiddenWord + " ";
     }
   }
+  hiddenWordDisplayed = hiddenWord.replace("  ", "&nbsp;&nbsp;");
+  console.log(hiddenWordDisplayed);
+  
   remainingGuesses = 10;
   lettersGuessed = [];
-  document.getElementById("word").innerHTML = word;
-  document.getElementById("hidden-word").innerHTML = hiddenWord;
-  document.getElementById("letters-guessed").innerHTML = lettersGuessed;
-  document.getElementById("remaining-guesses").innerHTML = remainingGuesses;
-  document.getElementById("message").innerHTML = "Game Started";
+  winsHTML.innerHTML = wins;
+  lossesHTML.innerHTML = losses;
+  remainingGuessesHTML.innerHTML = remainingGuesses;
+  wordHTML.innerHTML = word;
+  hiddenWordHTML.innerHTML = hiddenWordDisplayed;
+  lettersGuessedHTML.innerHTML = lettersGuessed;
+  remainingGuessesHTML.innerHTML = remainingGuesses;
+  messageHTML.innerHTML = "Game Started";
 }
 
 //  Was the key used? - Returns true or false
 function hasBeenGuessed(userGuess) {
   for (var i = 0; i < lettersGuessed.length; i++) {
     if (userGuess === lettersGuessed[i]) {
-        document.getElementById("message").innerHTML ="This letter has been guessed already.  Please try again.";
+        messageHTML.innerHTML ="This letter has been guessed already.  Please try again.";
         return true;
     }
   }
@@ -101,13 +108,13 @@ function hasBeenGuessed(userGuess) {
 //  Add the key to the lettersGuessed - updates lettersGuessed[]
 function addToLettersGuessed(userGuess) {
   lettersGuessed.push(userGuess);
-  document.getElementById("letters-guessed").innerHTML = lettersGuessed;
+  lettersGuessedHTML.innerHTML = lettersGuessed;
 }
 
 //  Check to see userGuess is in word - Returns true or false
 function wordContains(userGuess) {
   if (word.indexOf(userGuess) > -1) {
-    document.getElementById("message").innerHTML = "Good Job! This letter is in this word";
+    messageHTML.innerHTML = "Good Job! This letter is in this word";
     return true;
   } else {
     return false;
@@ -127,15 +134,16 @@ function updateHiddenWord(userGuess) {
     }
     //  Join the array and separate by spaces
     hiddenWord = hiddenWordArray.join(" ");
-    document.getElementById("hidden-word").innerHTML = hiddenWord;
+    hiddenWordDisplayed = hiddenWord.replace("  ", "&nbsp;&nbsp;");
+    hiddenWordHTML.innerHTML = hiddenWordDisplayed;
   }
 }
 
 //  Update the remaining guesses - updates remainingGuesses
 function decreaseRemainingGuesses() {
   remainingGuesses--;
-  document.getElementById("remaining-guesses").innerHTML = remainingGuesses;
-  document.getElementById("message").innerHTML ="Sorry, that letter is not in the word. Please try again.";
+  remainingGuessesHTML.innerHTML = remainingGuesses;
+  messageHTML.innerHTML ="Sorry, that letter is not in the word. Please try again.";
 }
 
 //  Check if word is complete - Returns true or false
@@ -161,11 +169,13 @@ function isGameOver() {
 //  Show you lose splash screen and hit any key to begin
 function showYouLose() {
   losses++;
-  document.getElementById("message").innerHTML = "You Lose!";
+  lossesHTML.innerHTML = losses;
+  messageHTML.innerHTML = "You Lose!";
 }
 
 //  Show you win splash screen and hit any key to begin
 function showYouWin() {
   wins++;
-  document.getElementById("message").innerHTML = "You Win!";
+  winsHTML.innerHTML = wins;
+  messageHTML.innerHTML = "You Win!";
 }
