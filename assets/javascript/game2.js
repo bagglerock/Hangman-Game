@@ -22,10 +22,18 @@ var remainingGuesses = 10;
 var userGuess; //  The letter that was pressed as represented by the key
 var word; //  The word that was selected
 var hiddenWord = ""; //  The word represented by "-"'s
+var gameOn = false;
 
 //  ** SCRIPT **
 
-initialize();
+//  If the spacebar was pressed, then execute the code inside
+if (gameOn === false) {
+    document.body.onkeyup = function(e){
+        if(e.keyCode == 32){
+            initialize();
+        }
+    }
+}
 
 document.onkeyup = function(event) {
     userGuess = event.key.toLowerCase();
@@ -46,8 +54,9 @@ document.onkeyup = function(event) {
         console.log("Letter " + " has been guessed.  Please try again.")
         //write something to the screen to say that the letter had been guessed, please try again.
     }
-    console.log(hiddenWord);
-    console.log(remainingGuesses);
+    console.log();
+    console.log();
+    console.log();
 }
 
 //  ** FUNCTIONS **
