@@ -8,12 +8,15 @@
     <title>Hangman-Game</title>
 </head>
 <body>
-    <div id="press-key">Press any key to get this started.</div>
-    <div id="wins"><h3>Wins:</h3></div>
-    <div id="remaining-guesses"><h3>Remaining Guesses</h3></div>
-    <p id="letters-guessed">abcde</p>
-    <div id="word"><h3>Word:</h3></div>
-    
+    <ul class="list-group">
+        <li>Wins: <span id="wins"></span></li>
+        <li>Losses: <span id="losses"></span></li>
+        <li>Remaining Guesses: <span id="remaining-guesses"></span></li>
+        <li>Letters Guessed: <span id="letters-guessed"></span></li>
+        <li>Word: <span ><h1 id="word"></h1></span></li>
+        <li>Hidden Word: <span ><h1 id="hidden-word"></h1></span></li>
+        <li id="message"></li>
+    </ul>
 </body>
-<script type="text/javascript" src="./assets/javascript/game2.js"></script>
+<script type="text/javascript" src="./assets/javascript/game.js"></script>
 </html>

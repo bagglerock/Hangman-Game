@@ -1,79 +1,171 @@
-//  Grab the DOM elements and store them into variables
+//  ** REDO with functions **
+
+//  ** MAIN VALUES **
+
+//  HTML variables
 var pressKeyHTML = document.getElementById("press-key");
 var winsHTML = document.getElementById("wins");
+var lossesHTML = document.getElementById("losses");
 var remainingGuessesHTML = document.getElementById("remaining-guesses");
 var userGuessesHTML = document.getElementById("letters-guessed");
 var wordHTML = document.getElementById("word");
 
-//  Array of word choices
-var words = ["blah", "shoop", "noopie", "lalalala"];
+//  Arrays
+var lettersGuessed = [];
+var musicians = [
+  "dave matthews band",
+  "the killers",
+  "evanescense",
+  "adele",
+  "cream",
+  "styx",
+  "metallica",
+  "steve aoki",
+  "counting Crows",
+  "reel big fish",
+  "the script"
+];
 
-//  Variables for Wins, Guesses, and Letters Guessed tryAgain
-var wins = 0;
-var remainingGuesses = 10;
-var userGuesses = [];
+//  Variables
+var wins;
+var losses;
+var remainingGuesses;
+var userGuess; //  The letter that was pressed as represented by the key
+var word; //  The word that was selected
+var hiddenWord; //  The word represented by "-"'s
 
-winsHTML.textContent = wins;
-remainingGuessesHTML.textContent = remainingGuesses;
-userGuessesHTML.textContent = userGuesses;
+//  ** SCRIPT **
 
-//  Check to see if the space bar is pressed to start
+//  If the spacebar was pressed, then execute the code inside
+document.body.onkeyup = function(event) {
+  if (event.keyCode == 32) {
+    initialize();
+  }
+};
 
-//  Choose a word to start off with  ** Beginning **
-var word = words[Math.floor(Math.random() * words.length)];
-//  Show the word as dashes
-hiddenWord = "";
-for (var i = 0; i < word.length; i++){
-    hiddenWord = hiddenWord + "- ";
-}
-wordHTML.textContent = hiddenWord;
-console.log(word);
-
-//  Listen for key press and store it as a variable userGuess
 document.onkeyup = function(event) {
-  var userGuess = event.key.toLowerCase();
-  console.log("The key that was pressed was " + userGuess);
-
-  //  Check to see if userGuess is in the lettersGuessed array using a tryAgain boolean expression
-  var tryAgain = false;
-  for (var i = 0; i < userGuesses.length; i++) {
-    if (userGuess === userGuesses[i]) {
-        tryAgain = true;
-    }
-  }
-  //  If tryAgain is not true then, add the userGuess to the userGuesses array and check to see if userGuess is in the word
-  if(!tryAgain){
-    userGuesses.push(userGuess);
-    userGuessesHTML.textContent = userGuesses;
-    //  Check to see if userGuess is in the word and switch the - to the userGuess
-    if(word.indexOf(userGuess) > -1){
-        //  Go through each letter of the word and change the - to the userGuess
-        for(var i = 0; i < word.length; i++){
-            if (userGuess === word[i]){
-                //  Split the hiddenWord into an array split by spaces
-                hiddenWordArray = hiddenWord.split(" ");
-                //  In position i replace 1 array element and replace with userGuess
-                hiddenWordArray.splice(i, 1, userGuess);
-                //  Join the array and separate by spaces
-                hiddenWord = hiddenWordArray.join(" ");
-            }
+  if (event.keyCode >= 65 && event.keyCode <= 90) {
+    userGuess = event.key.toLowerCase();
+    if (!hasBeenGuessed(userGuess)) {
+      addToLettersGuessed(userGuess);
+      if (wordContains(userGuess)) {
+        updateHiddenWord(userGuess);
+        if (wordIsComplete()) {
+          showYouWin();
         }
-        wordHTML.textContent = hiddenWord;
-        //  Check to see if the word is complete
-        if(word.indexOf("-") === -1){
-            //Change the screen to you win!!!
+      } else {
+        decreaseRemainingGuesses();
+        if (remainingGuesses === 0) {
+          showYouLose();
         }
-    //  If the userGuess is wrong then decrease the remaining guesses by one and update the remaining guesses in HTML
+      }
     } else {
-        remainingGuesses--;
-        remainingGuessesHTML.textContent = remainingGuesses;
-        if (remainingGuesses === 0){
-            //game over
-        }
     }
-    
+  }
+};
+
+//  ** FUNCTIONS **
+
+//  Initialize Hangman
+function initialize() {
+  //  Set the word
+  word = musicians[Math.floor(Math.random() * musicians.length)];
+  //  Empty the hidden word and set it
+  hiddenWord = "";
+  for (var i = 0; i < word.length; i++) {
+    if (word[i] !== " ") {
+      hiddenWord = hiddenWord + "- ";
+    } else {
+      hiddenWord = hiddenWord + " &nbsp;&nbsp; ";
+    }
+  }
+  remainingGuesses = 10;
+  lettersGuessed = [];
+  document.getElementById("word").innerHTML = word;
+  document.getElementById("hidden-word").innerHTML = hiddenWord;
+  document.getElementById("letters-guessed").innerHTML = lettersGuessed;
+  document.getElementById("remaining-guesses").innerHTML = remainingGuesses;
+  document.getElementById("message").innerHTML = "Game Started";
+}
+
+//  Was the key used? - Returns true or false
+function hasBeenGuessed(userGuess) {
+  for (var i = 0; i < lettersGuessed.length; i++) {
+    if (userGuess === lettersGuessed[i]) {
+        document.getElementById("message").innerHTML ="This letter has been guessed already.  Please try again.";
+        return true;
+    }
+  }
+}
+
+//  Add the key to the lettersGuessed - updates lettersGuessed[]
+function addToLettersGuessed(userGuess) {
+  lettersGuessed.push(userGuess);
+  document.getElementById("letters-guessed").innerHTML = lettersGuessed;
+}
+
+//  Check to see userGuess is in word - Returns true or false
+function wordContains(userGuess) {
+  if (word.indexOf(userGuess) > -1) {
+    document.getElementById("message").innerHTML = "Good Job! This letter is in this word";
+    return true;
   } else {
-      console.log("The letter " + userGuess + " was already used. Please try again.")
+    return false;
+  }
+}
+
+//  Change the hiddenWord - Updates wordHTML
+function updateHiddenWord(userGuess) {
+  if (userGuess !== " ") {
+    //  Split the hiddenWord into an array split by spaces
+    hiddenWordArray = hiddenWord.split(" ");
+    for (var i = 0; i < word.length; i++) {
+      if (userGuess === word[i]) {
+        //  In position i replace 1 array element and replace with userGuess
+        hiddenWordArray.splice(i, 1, userGuess);
+      }
+    }
+    //  Join the array and separate by spaces
+    hiddenWord = hiddenWordArray.join(" ");
+    document.getElementById("hidden-word").innerHTML = hiddenWord;
+  }
+}
+
+//  Update the remaining guesses - updates remainingGuesses
+function decreaseRemainingGuesses() {
+  remainingGuesses--;
+  document.getElementById("remaining-guesses").innerHTML = remainingGuesses;
+  document.getElementById("message").innerHTML ="Sorry, that letter is not in the word. Please try again.";
+}
+
+//  Check if word is complete - Returns true or false
+function wordIsComplete() {
+  if (hiddenWord.indexOf("-") === -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+//  Check if remainingGuesses === 0 - Return true or false
+function isGameOver() {
+  if (remainingGuesses === 0 || wordIsComplete()) {
+    return true;
+  } else {
+    return false;
   }
 
+  //  do something
+}
+
+//  Show you lose splash screen and hit any key to begin
+function showYouLose() {
+  losses++;
+  document.getElementById("message").innerHTML = "You Lose!";
+}
+
+//  Show you win splash screen and hit any key to begin
+function showYouWin() {
+  wins++;
+  document.getElementById("message").innerHTML = "You Win!";
 }
