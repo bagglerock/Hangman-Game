@@ -151,7 +151,7 @@ function initialize() {
   hiddenWordHTML.innerHTML = hiddenWordDisplayed;
   lettersGuessedHTML.innerHTML = "Letters Guessed: ";
   messageHTML.innerHTML = "<h3>Game Started. Press a letter to continue.</h3>";
-  embedHTML.innerHTML = "<iframe src='" + songLink + "' width='300' height='380' frameborder='1' allowtransparency='true'></iframe>";
+  embedHTML.innerHTML = "<iframe src='" + songLink + "' width='300' height='380' frameborder='1' allowtransparency='true'></iframe><br><p>OK, too much of a hint.</p>";
   console.log(songLink);
 }
 

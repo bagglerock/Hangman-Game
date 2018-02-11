@@ -11,13 +11,6 @@ header {
     border-bottom: solid white 2px;
 }
 
-summary {
-    color: darkolivegreen;
-    font-family: 'VT323', monospace;
-    font-size: 25px;
-
-}
-
 main {
     height: 500px;
 }
@@ -29,6 +22,10 @@ footer {
     border-top: solid white 2px;
     font-size: 10px;
 
+}
+
+.btn {
+    color: black;
 }
 
 .word, .guessed, .message, .scoreboard {
