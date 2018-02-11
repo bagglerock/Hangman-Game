@@ -1,0 +1,27 @@
+body {
+    background-color: black;
+}
+
+header, main, footer {
+    background-color: darkred;
+    color: white;
+}
+main {
+    height: 450px;
+}
+.word, .guessed, .message {
+    background-color: blanchedalmond;
+    color: black;
+}
+
+.word {
+    height: 150px;
+}
+
+.guessed, .button {
+    height: 70px;
+}
+
+.scoreboard, .message {
+    height: 80px;
+}

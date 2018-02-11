@@ -5,9 +5,9 @@ var winsHTML = document.getElementById("wins");
 var lossesHTML = document.getElementById("losses");
 var remainingGuessesHTML = document.getElementById("remaining-guesses");
 var lettersGuessedHTML = document.getElementById("letters-guessed");
-var wordHTML = document.getElementById("word");
 var hiddenWordHTML = document.getElementById("hidden-word")
 var messageHTML = document.getElementById("message");
+var startButton = document.getElementById("start");
 
 //  Arrays
 var lettersGuessed = [];
@@ -36,10 +36,9 @@ var hiddenWord; //  The word represented by "-"'s
 //  ** SCRIPT **
 
 //  If the spacebar was pressed, then execute the code inside
-document.body.onkeyup = function(event) {
-  if (event.keyCode == 32) {
+startButton.onclick = function(){
     initialize();
-  }
+    startButton.innerHTML = "New Game";
 };
 
 document.onkeyup = function(event) {
@@ -79,19 +78,16 @@ function initialize() {
     }
   }
   //  Because HTML doesn't display double spacing I had to write this to accomodate the look on the page with this
-  hiddenWordDisplayed = hiddenWord.replace(new RegExp('  ', 'gi'), '&nbsp;&nbsp;');
+  hiddenWordDisplayed = hiddenWord.replace(new RegExp('  ', 'gi'), '&nbsp;&nbsp;&nbsp;');
   //  Re initiate the game variables
   remainingGuesses = 10;
   lettersGuessed = [];
   //  Update the HTML with the new data
-  winsHTML.innerHTML = wins;
-  lossesHTML.innerHTML = losses;
-  remainingGuessesHTML.innerHTML = remainingGuesses;
-  wordHTML.innerHTML = word;
+  winsHTML.innerHTML = "Wins: " + wins;
+  lossesHTML.innerHTML = "Losses: " + losses;
+  remainingGuessesHTML.innerHTML = "Remaining Guesses: " + remainingGuesses;
   hiddenWordHTML.innerHTML = hiddenWordDisplayed;
-  lettersGuessedHTML.innerHTML = lettersGuessed;
-  remainingGuessesHTML.innerHTML = remainingGuesses;
-  messageHTML.innerHTML = "Game Started";
+  messageHTML.innerHTML = "Game Started. Press a letter to continue.";
 }
 
 //  Was the key used? - Returns true or false
@@ -109,7 +105,7 @@ function hasBeenGuessed(userGuess) {
 function addToLettersGuessed(userGuess) {
   lettersGuessed.push(userGuess);
   //  adds the letter guessed into the array and updates data on the HTML
-  lettersGuessedHTML.innerHTML = lettersGuessed;
+  lettersGuessedHTML.innerHTML = "Letters Guessed: " + lettersGuessed;
 }
 
 //  Check to see userGuess is in word - Returns true if it is in the word and false if not.  Also updates the HTML with data
@@ -136,7 +132,7 @@ function updateHiddenWord(userGuess) {
     //  Join the array and separate by spaces
     hiddenWord = hiddenWordArray.join(" ");
     //  Couldn't think of an alternative so I used the regular expression to replace all double spaces to display in the HTML page correctly.
-    hiddenWordDisplayed = hiddenWord.replace(new RegExp('  ', 'gi'), '&nbsp;&nbsp;');
+    hiddenWordDisplayed = hiddenWord.replace(new RegExp('  ', 'gi'), '&nbsp;&nbsp;&nbsp;');
     hiddenWordHTML.innerHTML = hiddenWordDisplayed;
   }
 }
@@ -144,7 +140,7 @@ function updateHiddenWord(userGuess) {
 //  Update the remaining guesses - updates remainingGuesses and updates the HTML
 function decreaseRemainingGuesses() {
   remainingGuesses--;
-  remainingGuessesHTML.innerHTML = remainingGuesses;
+  remainingGuessesHTML.innerHTML = "Remaining Guesses: " + remainingGuesses;
   messageHTML.innerHTML ="Sorry, that letter is not in the word. Please try again.";
 }
 
@@ -171,13 +167,13 @@ function isGameOver() {
 //  Show you lose splash screen and hit any key to begin
 function showYouLose() {
   losses++;
-  lossesHTML.innerHTML = losses;
+  lossesHTML.innerHTML = "Losses: " + losses;
   messageHTML.innerHTML = "You Lose!";
 }
 
 //  Show you win splash screen and hit any key to begin
 function showYouWin() {
   wins++;
-  winsHTML.innerHTML = wins;
-  messageHTML.innerHTML = "You Win!";
+  winsHTML.innerHTML = "Wins: " + wins;
+  messageHTML.innerHTML = "You Win! Congratulations!";
 }
