@@ -22,7 +22,12 @@ var musicians = [
   "steve aoki",
   "counting crows",
   "reel big fish",
-  "the script"
+  "the script",
+  "tool",
+  "zac brown band",
+  "van morrison",
+  "the cars",
+  "frank sinatra"
 ];
 
 //  Variables
