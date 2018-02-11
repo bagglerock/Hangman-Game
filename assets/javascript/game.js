@@ -1,5 +1,3 @@
-//  ** REDO with functions **
-
 //  ** MAIN VALUES **
 
 //  HTML variables
@@ -71,7 +69,7 @@ document.onkeyup = function(event) {
 function initialize() {
   //  Set the word
   word = musicians[Math.floor(Math.random() * musicians.length)];
-  //  Empty the hidden word and set it
+  //  Empty the hidden word and set it.  Does it by setting "- " for every letter and a space for the space 
   hiddenWord = "";
   for (var i = 0; i < word.length; i++) {
     if (word[i] !== " ") {
@@ -80,11 +78,12 @@ function initialize() {
       hiddenWord = hiddenWord + " ";
     }
   }
-  hiddenWordDisplayed = hiddenWord.replace("  ", "&nbsp;&nbsp;");
-  console.log(hiddenWordDisplayed);
-  
+  //  Because HTML doesn't display double spacing I had to write this to accomodate the look on the page with this
+  hiddenWordDisplayed = hiddenWord.replace(new RegExp('  ', 'gi'), '&nbsp;&nbsp;');
+  //  Re initiate the game variables
   remainingGuesses = 10;
   lettersGuessed = [];
+  //  Update the HTML with the new data
   winsHTML.innerHTML = wins;
   lossesHTML.innerHTML = losses;
   remainingGuessesHTML.innerHTML = remainingGuesses;
@@ -99,6 +98,7 @@ function initialize() {
 function hasBeenGuessed(userGuess) {
   for (var i = 0; i < lettersGuessed.length; i++) {
     if (userGuess === lettersGuessed[i]) {
+        //  Returns true of the userGuess is in the array and updates data on the HTML
         messageHTML.innerHTML ="This letter has been guessed already.  Please try again.";
         return true;
     }
@@ -108,10 +108,11 @@ function hasBeenGuessed(userGuess) {
 //  Add the key to the lettersGuessed - updates lettersGuessed[]
 function addToLettersGuessed(userGuess) {
   lettersGuessed.push(userGuess);
+  //  adds the letter guessed into the array and updates data on the HTML
   lettersGuessedHTML.innerHTML = lettersGuessed;
 }
 
-//  Check to see userGuess is in word - Returns true or false
+//  Check to see userGuess is in word - Returns true if it is in the word and false if not.  Also updates the HTML with data
 function wordContains(userGuess) {
   if (word.indexOf(userGuess) > -1) {
     messageHTML.innerHTML = "Good Job! This letter is in this word";
@@ -121,7 +122,7 @@ function wordContains(userGuess) {
   }
 }
 
-//  Change the hiddenWord - Updates wordHTML
+//  Change the hiddenWord - Updates the HTML
 function updateHiddenWord(userGuess) {
   if (userGuess !== " ") {
     //  Split the hiddenWord into an array split by spaces
@@ -134,12 +135,13 @@ function updateHiddenWord(userGuess) {
     }
     //  Join the array and separate by spaces
     hiddenWord = hiddenWordArray.join(" ");
-    hiddenWordDisplayed = hiddenWord.replace("  ", "&nbsp;&nbsp;");
+    //  Couldn't think of an alternative so I used the regular expression to replace all double spaces to display in the HTML page correctly.
+    hiddenWordDisplayed = hiddenWord.replace(new RegExp('  ', 'gi'), '&nbsp;&nbsp;');
     hiddenWordHTML.innerHTML = hiddenWordDisplayed;
   }
 }
 
-//  Update the remaining guesses - updates remainingGuesses
+//  Update the remaining guesses - updates remainingGuesses and updates the HTML
 function decreaseRemainingGuesses() {
   remainingGuesses--;
   remainingGuessesHTML.innerHTML = remainingGuesses;
