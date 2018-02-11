@@ -43,7 +43,7 @@ var hiddenWord; //  The word represented by "-"'s
 //  If the spacebar was pressed, then execute the code inside
 startButton.onclick = function(){
     initialize();
-    startButton.innerHTML = "New Game";
+    startButton.innerHTML = "new game";
 };
 
 document.onkeyup = function(event) {

@@ -5,58 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P|VT323" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Hangman-Game</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row my-1">
-            <header class="offset-md-1 col-md-10 text-center rounded margin">
-                <h1>Hangman Game</h1>
-            </header>
-        </div>
-        <div class="row">
-            <main class="offset-md-1 col-md-10 text-center rounded">
+    <div class="container-fluid">
+        <header class="row">
+            <div class="col-md-5 pt-2">
+                <h1>Hangman</h1>
+            </div>
+        </header>
+        <main class="row mt-2">
+            <section class="col-md-6">
                 <div class="wrapper">
                     <div class="row">
-                        <div class="offset-md-1 col-md-10 pt-5 mt-5 word my-1 rounded">
-                            <h1 id="hidden-word"></h1>
+                        <div class="col-md-12 word rounded">
+                            <h3 id="hidden-word"></h3>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="offset-md-1 col-md-10 pt-4 guessed my-1 rounded">
+                        <div class="col-md-12 guessed my-1 rounded">
                             <h6 id="letters-guessed"></h6>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="offset-md-1 col-md-10 pt-3 message my-1 rounded">
+                        <div class="col-md-12 message rounded">
                             <h5 id="message"></h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="offset-md-1 col-md-10 pt-3 button my-1 rounded">
+                        <div class="col-md-12 rounded my-1 scoreboard">
+                            <ul class="list-unstyled">
+                                <li id="wins"></li>
+                                <li id="losses"></li>
+                                <li id="remaining-guesses"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-2 pl-0 button rounded">
                             <button class="btn" id="start">start game</button>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
-        <div class="row my-1">
-            <div class="col-md-12">
-                <div class="row">
-                    <footer class="offset-md-1 col-md-10 rounded scoreboard pl-5">
-                        <ul class="list-unstyled">
-                            <li id="wins"></li>
-                            <li id="losses"></li>
-                            <li id="remaining-guesses"></li>
-                        </ul>
-                    </footer>
-
-                </div>
-            </div>
-        </div>
+            </section>
+            <summary class="col-md-6">
+                <p>Instructions:</p>
+                <ul>
+                    <li>Press "start game" to play.</li>
+                    <li>Press letters from A-Z to guess the word.</li>
+                    <li>Guess the words within 10 tries.</li>
+                    <li>Press "new game" to restart.</li>
+                </ul>
+            </summary>
+        </main>
     </div>
 </body>
 <script type="text/javascript" src="./assets/javascript/game.js"></script>

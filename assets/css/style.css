@@ -1,17 +1,26 @@
 body {
-    background-color: black;
+    background-color: rgb(1, 20, 1);
 }
 
 header, main, footer {
-    background-color: darkred;
-    color: white;
+    color: darkolivegreen;
+    font-family: 'Press Start 2P', cursive;
 }
+
+summary {
+    color: darkolivegreen;
+    font-family: 'VT323', monospace;
+    font-size: 25px;
+
+}
+
 main {
-    height: 450px;
+    height: 500px;
 }
-.word, .guessed, .message {
-    background-color: blanchedalmond;
-    color: black;
+.word, .guessed, .message, .scoreboard {
+    border: solid darkolivegreen 2px;
+    color: darkolivegreen;
+    font-family: 'VT323', monospace;
 }
 
 .word {
