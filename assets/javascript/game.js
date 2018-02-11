@@ -19,63 +19,63 @@ var musicians = [
   },
   {
     name: "The Killers",
-    link: "https://open.spotify.com/track/0kYUrLVQOfx21xuXu7OGrT?si=4Gr9208mS1uhB8lNzEVFug"
+    link: "https://open.spotify.com/embed/track/0kYUrLVQOfx21xuXu7OGrT"
   },
   {
     name: "Ed Sheeran",
-    link: "https://open.spotify.com/track/2dmOWlEHrP266Qgz6wnUrd?si=r7HKnQMORXqkFRcWYwm9DA"
+    link: "https://open.spotify.com/embed/track/2dmOWlEHrP266Qgz6wnUrd"
   },
   {
     name: "Billy Joel",
-    link: "https://open.spotify.com/track/4850v7DuT7raVYAWc1ODPv?si=grLj6A0KSqePCanB5AOUkg"
+    link: "https://open.spotify.com/embed/track/4850v7DuT7raVYAWc1ODPv"
   },
   {
     name: "Cream",
-    link: "https://open.spotify.com/track/6FRwDxXsvSasw0y2eDArsz?si=d2SfWGoMR1-qeiaqpOkmZA"
+    link: "https://open.spotify.com/embed/track/6FRwDxXsvSasw0y2eDArsz"
   },
   {
     name: "Styx",
-    link: "https://open.spotify.com/track/4hWUOIDHda9XOb1zDchftP?si=_5epsiX1Q5iiIDMbIZ3W5Q"
+    link: "https://open.spotify.com/embed/track/4hWUOIDHda9XOb1zDchftP"
   },
   {
     name: "Boyce Avenue",
-    link: "https://open.spotify.com/track/6kABlbpq8D32qZvXbsUkiu?si=UrXMqbh6RmGdV_OCaCQrXw"
+    link: "https://open.spotify.com/embed/track/6kABlbpq8D32qZvXbsUkiu"
   },
   {
     name: "Third Eye Blind",
-    link: "https://open.spotify.com/track/4lqWT4pavryGVlMhn6khZq?si=_fEN7yfBTRSN72UEBANE5A"
+    link: "https://open.spotify.com/embed/track/4lqWT4pavryGVlMhn6khZq"
   },
   {
     name: "Counting Crows",
-    link: "https://open.spotify.com/track/3GwIz1pLK6M2M0qp032McP?si=F-30pMf0TzWWJGxR-8wmDg"
+    link: "https://open.spotify.com/embed/track/3GwIz1pLK6M2M0qp032McP"
   },
   {
     name: "Reel Big Fish",
-    link: "https://open.spotify.com/track/7qEm8Z4KFLdCMlv96KykVd?si=yEGRscMHTwGdNMTuvgZ0Hg"
+    link: "https://open.spotify.com/embed/track/7qEm8Z4KFLdCMlv96KykVd"
   },
   {
     name: "The Script",
-    link: "https://open.spotify.com/track/7eD2qAkE1EAs9poZhpVD6o?si=jRQHZIhPQAO2Cgwo4bYh2Q"
+    link: "https://open.spotify.com/embed/track/7eD2qAkE1EAs9poZhpVD6o"
   },
   {
     name: "Bleachers",
-    link: "https://open.spotify.com/track/5L95vS64rG1YMIFm1hLjyZ?si=3xLSvDTITCangdddRNn-6A"
+    link: "https://open.spotify.com/embed/track/5L95vS64rG1YMIFm1hLjyZ"
   },
   {
     name: "Zac Brown Band",
-    link: "https://open.spotify.com/track/4iMIIUvmScLS65kg5sHBla?si=RdptRT7fS_2GciBaQFV1PA"
+    link: "https://open.spotify.com/embed/track/4iMIIUvmScLS65kg5sHBla"
   },
   {
     name: "Van Morrison",
-    link: "https://open.spotify.com/track/3lh3iiiJeiBXHSZw6u0kh6?si=eVKC-kNARS6WAkHU23vREQ"
+    link: "https://open.spotify.com/embed/track/3lh3iiiJeiBXHSZw6u0kh6"
   },
   {
     name: "Dire Straits",
-    link: "https://open.spotify.com/track/57MflfPN3ObQQAQtPUp0WF?si=AT-PGym9TqG2hIjR72USeg"
+    link: "https://open.spotify.com/embed/track/57MflfPN3ObQQAQtPUp0WF"
   },
   {
     name: "Frank Sinatra",
-    link: "https://open.spotify.com/track/6lTTzSk1hRrxp4VMwXBp2l?si=UsTPdpPwRiio0zLtw_6xaw"
+    link: "https://open.spotify.com/embed/track/6lTTzSk1hRrxp4VMwXBp2l"
   }
 ];
 
@@ -152,6 +152,7 @@ function initialize() {
   lettersGuessedHTML.innerHTML = "Letters Guessed: ";
   messageHTML.innerHTML = "<h3>Game Started. Press a letter to continue.</h3>";
   embedHTML.innerHTML = "<iframe src='" + songLink + "' width='300' height='380' frameborder='1' allowtransparency='true'></iframe>";
+  console.log(songLink);
 }
 
 //  Was the key used? - Returns true or false
