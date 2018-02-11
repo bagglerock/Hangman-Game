@@ -173,7 +173,7 @@ function isGameOver() {
 function showYouLose() {
   losses++;
   lossesHTML.innerHTML = "Losses: " + losses;
-  messageHTML.innerHTML = "You Lose!";
+  messageHTML.innerHTML = "You Lose! Press 'new game'";
 }
 
 //  Show you win splash screen and hit any key to begin

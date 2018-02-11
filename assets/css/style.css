@@ -7,6 +7,10 @@ header, main, footer {
     font-family: 'Press Start 2P', cursive;
 }
 
+header {
+    border-bottom: solid white 2px;
+}
+
 summary {
     color: darkolivegreen;
     font-family: 'VT323', monospace;
@@ -17,6 +21,16 @@ summary {
 main {
     height: 500px;
 }
+
+footer {
+    background-color: darkolivegreen;
+    color: white;
+    height: 50px;
+    border-top: solid white 2px;
+    font-size: 10px;
+
+}
+
 .word, .guessed, .message, .scoreboard {
     border: solid darkolivegreen 2px;
     color: darkolivegreen;
