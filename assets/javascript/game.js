@@ -47,7 +47,9 @@ startButton.onclick = function(){
 };
 
 document.onkeyup = function(event) {
+  //  If the key stroke is between a-z then do stuff
   if (event.keyCode >= 65 && event.keyCode <= 90 && isGameOver() !== true) {
+    //  toLowerCase might not be necessary anymore but leaving it anyway
     userGuess = event.key.toLowerCase();
     if (!hasBeenGuessed(userGuess)) {
       addToLettersGuessed(userGuess);
@@ -165,8 +167,6 @@ function isGameOver() {
   } else {
     return false;
   }
-
-  //  do something
 }
 
 //  Show you lose splash screen and hit any key to begin
