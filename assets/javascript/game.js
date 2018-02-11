@@ -43,7 +43,7 @@ document.body.onkeyup = function(event) {
 };
 
 document.onkeyup = function(event) {
-  if (event.keyCode >= 65 && event.keyCode <= 90) {
+  if (event.keyCode >= 65 && event.keyCode <= 90 && isGameOver() !== true) {
     userGuess = event.key.toLowerCase();
     if (!hasBeenGuessed(userGuess)) {
       addToLettersGuessed(userGuess);
@@ -157,7 +157,7 @@ function wordIsComplete() {
   }
 }
 
-//  Check if remainingGuesses === 0 - Return true or false
+//  Check if remainingGuesses === 0 and wordIsComplete - Return true or false
 function isGameOver() {
   if (remainingGuesses === 0 || wordIsComplete()) {
     return true;
