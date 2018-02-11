@@ -37,7 +37,7 @@ footer {
     font-family: 'VT323', monospace;
 }
 
-.word {
+.word,  .message {
     height: 150px;
 }
 
@@ -45,6 +45,6 @@ footer {
     height: 70px;
 }
 
-.scoreboard, .message {
+.scoreboard {
     height: 80px;
 }
