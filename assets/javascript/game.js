@@ -11,7 +11,7 @@ var startButton = document.getElementById("start");
 
 //  Arrays
 var lettersGuessed = [];
-var musicians = [
+/*var musicians = [
   "dave matthews band",
   "the killers",
   "evanescense",
@@ -28,7 +28,30 @@ var musicians = [
   "van morrison",
   "the cars",
   "frank sinatra"
-];
+  <iframe src="" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+];*/
+
+var musicians = {
+    "musician": [
+        { "name" : "Dave Matthews Band" , "song" : "https://open.spotify.com/embed/track/2nklcPJ3YhYJfC2ibStXz9"},
+        { "name" : "The Killers" , "song" : "https://open.spotify.com/track/0kYUrLVQOfx21xuXu7OGrT?si=4Gr9208mS1uhB8lNzEVFug"},
+        { "name" : "Ed Sheeran" , "song" : "https://open.spotify.com/track/2dmOWlEHrP266Qgz6wnUrd?si=r7HKnQMORXqkFRcWYwm9DA"},
+        { "name" : "Billy Joel" , "song" : "https://open.spotify.com/track/4850v7DuT7raVYAWc1ODPv?si=grLj6A0KSqePCanB5AOUkg"},
+        { "name" : "Cream" , "song" : "https://open.spotify.com/track/6FRwDxXsvSasw0y2eDArsz?si=d2SfWGoMR1-qeiaqpOkmZA"},
+        { "name" : "Styx" , "song" : "https://open.spotify.com/track/4hWUOIDHda9XOb1zDchftP?si=_5epsiX1Q5iiIDMbIZ3W5Q"},
+        { "name" : "Boyce Avenue" , "song" : "https://open.spotify.com/track/6kABlbpq8D32qZvXbsUkiu?si=UrXMqbh6RmGdV_OCaCQrXw"},
+        { "name" : "Third Eye Blind" , "song" : "https://open.spotify.com/track/4lqWT4pavryGVlMhn6khZq?si=_fEN7yfBTRSN72UEBANE5A"},
+        { "name" : "Counting Crows" , "song" : "https://open.spotify.com/track/3GwIz1pLK6M2M0qp032McP?si=F-30pMf0TzWWJGxR-8wmDg"},
+        { "name" : "Reel Big Fish" , "song" : "https://open.spotify.com/track/7qEm8Z4KFLdCMlv96KykVd?si=yEGRscMHTwGdNMTuvgZ0Hg"},
+        { "name" : "The Script" , "song" : "https://open.spotify.com/track/7eD2qAkE1EAs9poZhpVD6o?si=jRQHZIhPQAO2Cgwo4bYh2Q"},
+        { "name" : "Rollercoaster" , "song" : "https://open.spotify.com/track/5L95vS64rG1YMIFm1hLjyZ?si=3xLSvDTITCangdddRNn-6A"},
+        { "name" : "Zac Brown Band" , "song" : "https://open.spotify.com/track/4iMIIUvmScLS65kg5sHBla?si=RdptRT7fS_2GciBaQFV1PA"},
+        { "name" : "Van Morrison" , "song" : "https://open.spotify.com/track/3lh3iiiJeiBXHSZw6u0kh6?si=eVKC-kNARS6WAkHU23vREQ"},
+        { "name" : "Dire Straits" , "song" : "https://open.spotify.com/track/57MflfPN3ObQQAQtPUp0WF?si=AT-PGym9TqG2hIjR72USeg"},
+        { "name" : "Frank Sinatra" , "song" : "https://open.spotify.com/track/6lTTzSk1hRrxp4VMwXBp2l?si=UsTPdpPwRiio0zLtw_6xaw"}
+
+    ]
+}
 
 //  Variables
 var wins = 0;
@@ -68,6 +91,10 @@ document.onkeyup = function(event) {
     }
   }
 };
+document.onkeyup = function(event){
+    keyPress = event.key;
+    console.log(keyPress); 
+}
 
 //  ** FUNCTIONS **
 
