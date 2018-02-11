@@ -7,6 +7,7 @@ var remainingGuessesHTML = document.getElementById("remaining-guesses");
 var lettersGuessedHTML = document.getElementById("letters-guessed");
 var hiddenWordHTML = document.getElementById("hidden-word");
 var messageHTML = document.getElementById("message");
+var embedHTML = document.getElementById("embed");
 var startButton = document.getElementById("start");
 
 //  Arrays
@@ -150,6 +151,7 @@ function initialize() {
   hiddenWordHTML.innerHTML = hiddenWordDisplayed;
   lettersGuessedHTML.innerHTML = "Letters Guessed: ";
   messageHTML.innerHTML = "<h3>Game Started. Press a letter to continue.</h3>";
+  embedHTML.innerHTML = "<iframe src='" + songLink + "' width='300' height='380' frameborder='1' allowtransparency='true'></iframe>";
 }
 
 //  Was the key used? - Returns true or false
