@@ -1,6 +1,4 @@
-//  ** MAIN VALUES **
-
-//  HTML variables
+//  Global Variables
 var winsHTML = document.getElementById("wins");
 var lossesHTML = document.getElementById("losses");
 var remainingGuessesHTML = document.getElementById("remaining-guesses");
@@ -9,9 +7,9 @@ var hiddenWordHTML = document.getElementById("hidden-word");
 var messageHTML = document.getElementById("message");
 var embedHTML = document.getElementById("embed");
 var startButton = document.getElementById("start");
-
-//  Arrays
-var lettersGuessed = [];
+var resetButton = document.getElementById("reset-button");
+var userGuess; //  The letter that was pressed as represented by the key
+var spacer = "&nbsp;&nbsp;&nbsp;";
 var musicians = [
   {
     name: "Dave Matthews Band",
@@ -79,169 +77,145 @@ var musicians = [
   }
 ];
 
-//  Variables
-var wins = 0;
-var losses = 0;
-var remainingGuesses;
-var userGuess; //  The letter that was pressed as represented by the key
-var word; //  The word that was selected
-var hiddenWord; //  The word represented by "-"'s
 
-//  ** SCRIPT **
+//  Objects
+var hangman = {
+  wins: 0,
+  losses: 0,
+  remainingGuesses: 10,
+  lettersGuessed : [],
+  word: "",
+  hiddenWord: "",
+  hiddenWordDisplayed : "",
+  songLink : "",
+  initialize : function () {
+    //  Generate a random number
+    var randomNumber = Math.floor(Math.random() * musicians.length);
+    //  Set the word & a link to the song for embed
+    this.word = musicians[randomNumber].name.toLowerCase();
+    this.songLink = musicians[randomNumber].link;
+    //  Empty the hidden word and set it.  Does it by setting "- " for every letter and a space for the space
+    this.hiddenWord = "";
+    for (var i = 0; i < this.word.length; i++) {
+      if (this.word[i] !== " ") {
+        this.hiddenWord = this.hiddenWord + "- ";
+      } else {
+        this.hiddenWord = this.hiddenWord + " ";
+      }
+    }
+    //  Because HTML doesn't display double spacing I had to write this to accomodate the look on the page with this
+    this.hiddenWordDisplayed = this.hiddenWord.replace(
+      new RegExp("  ", "gi"), spacer);
+    //  Re initiate the game variables
+    this.remainingGuesses = 10;
+    this.lettersGuessed = [];
+    //  Update the HTML with the new data
+    winsHTML.innerHTML = "Wins: " + this.wins;
+    lossesHTML.innerHTML = "Losses: " + this.losses;
+    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + this.remainingGuesses;
+    hiddenWordHTML.innerHTML = this.hiddenWordDisplayed;
+    lettersGuessedHTML.innerHTML = "Letters Guessed: ";
+    messageHTML.textContent = "Game Started. Press a letter to continue.";
+  },
+  hasBeenGuessed : function (userGuess) {
+    for (var i = 0; i < this.lettersGuessed.length; i++) {
+      if (userGuess === this.lettersGuessed[i]) {
+        //  Returns true of the userGuess is in the array and updates data on the HTML
+        messageHTML.textContent =
+          "This letter has been guessed already.  Please try again.";
+        return true;
+      }
+    }
+  },
+  addToLettersGuessed : function (userGuess) {
+    this.lettersGuessed.push(userGuess);
+    //  adds the letter guessed into the array and updates data on the HTML
+    lettersGuessedHTML.innerHTML = "Letters Guessed: " + this.lettersGuessed;
+  },
+  wordContains : function (userGuess) {
+    if (this.word.indexOf(userGuess) > -1) {
+      messageHTML.innerHTML = "Good Job! This letter is in this word";
+      return true;
+    } else {
+      return false;
+    }
+  },
+  updateHiddenWord : function (userGuess) {
+    if (userGuess !== " ") {
+      //  Split the hiddenWord into an array split by spaces
+      var hiddenWordArray = this.hiddenWord.split(" ");
+      for (var i = 0; i < this.word.length; i++) {
+        if (userGuess === this.word[i]) {
+          //  In position i replace 1 array element and replace with userGuess
+          hiddenWordArray.splice(i, 1, userGuess);
+        }
+      }
+      //  Join the array and separate by spaces
+      this.hiddenWord = hiddenWordArray.join(" ");
+      //  Couldn't think of an alternative so I used the regular expression to replace all double spaces to display in the HTML page correctly.
+      this.hiddenWordDisplayed = this.hiddenWord.replace(
+        new RegExp("  ", "gi"), spacer);
+      hiddenWordHTML.innerHTML = this.hiddenWordDisplayed;
+    }
+  },
+  decreaseRemainingGuesses : function () {
+    this.remainingGuesses--;
+    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + this.remainingGuesses;
+    messageHTML.textContent =
+      "Sorry, that letter is not in the word. Please try again.";
+  },
+  wordIsComplete : function () {
+    if (this.hiddenWord.indexOf("-") === -1) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  isGameOver : function () {
+    if (this.remainingGuesses === 0 || this.wordIsComplete()) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  showYouLose : function () {
+    this.losses++;
+    lossesHTML.innerHTML = "Losses: " + this.losses;
+    messageHTML.textContent = "You Lose! Press \"new game\"";
+  },
+  showYouWin : function () {
+    this.wins++;
+    winsHTML.innerHTML = "Wins: " + this.wins;
+    messageHTML.textContent = "You Win! Congratulations!";
+    embedHTML.innerHTML = "<iframe src='" + this.songLink + "' width='300' height='390' frameborder='1' allowtransparency='true'></iframe>";
+  }
+};
 
-//  If the spacebar was pressed, then execute the code inside
+//  Script
 startButton.onclick = function() {
-  initialize();
-  startButton.innerHTML = "new game";
+    hangman.initialize();
+    startButton.innerHTML = "new game";
 };
 
 document.onkeyup = function(event) {
-  //  If the key stroke is between a-z then do stuff
-  if (event.keyCode >= 65 && event.keyCode <= 90 && isGameOver() !== true) {
-    //  toLowerCase might not be necessary anymore but leaving it anyway
-    userGuess = event.key.toLowerCase();
-    if (!hasBeenGuessed(userGuess)) {
-      addToLettersGuessed(userGuess);
-      if (wordContains(userGuess)) {
-        updateHiddenWord(userGuess);
-        if (wordIsComplete()) {
-          showYouWin();
-        }
-      } else {
-        decreaseRemainingGuesses();
-        if (remainingGuesses === 0) {
-          showYouLose();
+    //  If the key stroke is between a-z then do stuff
+    if (event.keyCode >= 65 && event.keyCode <= 90 && hangman.isGameOver() !== true) {
+      //  toLowerCase might not be necessary anymore but leaving it anyway
+      userGuess = event.key.toLowerCase();
+      if (!hangman.hasBeenGuessed(userGuess)) {
+        hangman.addToLettersGuessed(userGuess);
+        if (hangman.wordContains(userGuess)) {
+            hangman.updateHiddenWord(userGuess);
+          if (hangman.wordIsComplete()) {
+            hangman.showYouWin();
+          }
+        } else {
+            hangman.decreaseRemainingGuesses();
+          if (hangman.isGameOver()) {
+            hangman.showYouLose();
+          }
         }
       }
-    } else {
     }
-  }
-};
+  };
 
-//  ** FUNCTIONS **
-
-//  Initialize Hangman
-function initialize() {
-  //  Generate some random number
-  var randomNumber = Math.floor(Math.random() * musicians.length)
-  //  Set the word & a link to the song for embed
-  word = musicians[randomNumber].name.toLowerCase();
-  songLink = musicians[randomNumber].link;
-  //  Empty the hidden word and set it.  Does it by setting "- " for every letter and a space for the space
-  hiddenWord = "";
-  for (var i = 0; i < word.length; i++) {
-    if (word[i] !== " ") {
-      hiddenWord = hiddenWord + "- ";
-    } else {
-      hiddenWord = hiddenWord + " ";
-    }
-  }
-  //  Because HTML doesn't display double spacing I had to write this to accomodate the look on the page with this
-  hiddenWordDisplayed = hiddenWord.replace(
-    new RegExp("  ", "gi"),
-    "&nbsp;&nbsp;&nbsp;"
-  );
-  //  Re initiate the game variables
-  remainingGuesses = 10;
-  lettersGuessed = [];
-  //  Update the HTML with the new data
-  winsHTML.innerHTML = "Wins: " + wins;
-  lossesHTML.innerHTML = "Losses: " + losses;
-  remainingGuessesHTML.innerHTML = "Remaining Guesses: " + remainingGuesses;
-  hiddenWordHTML.innerHTML = hiddenWordDisplayed;
-  lettersGuessedHTML.innerHTML = "Letters Guessed: ";
-  messageHTML.innerHTML = "<h3>Game Started. Press a letter to continue.</h3>";
-  embedHTML.innerHTML = "<iframe src='" + songLink + "' width='300' height='380' frameborder='1' allowtransparency='true'></iframe><br><p>OK, too much of a hint.</p>";
-  console.log(songLink);
-}
-
-//  Was the key used? - Returns true or false
-function hasBeenGuessed(userGuess) {
-  for (var i = 0; i < lettersGuessed.length; i++) {
-    if (userGuess === lettersGuessed[i]) {
-      //  Returns true of the userGuess is in the array and updates data on the HTML
-      messageHTML.innerHTML =
-        "<h3>This letter has been guessed already.  Please try again.</h3>";
-      return true;
-    }
-  }
-}
-
-//  Add the key to the lettersGuessed - updates lettersGuessed[]
-function addToLettersGuessed(userGuess) {
-  lettersGuessed.push(userGuess);
-  //  adds the letter guessed into the array and updates data on the HTML
-  lettersGuessedHTML.innerHTML = "Letters Guessed: " + lettersGuessed;
-}
-
-//  Check to see userGuess is in word - Returns true if it is in the word and false if not.  Also updates the HTML with data
-function wordContains(userGuess) {
-  if (word.indexOf(userGuess) > -1) {
-    messageHTML.innerHTML = "<h3>Good Job! This letter is in this word</h3>";
-    return true;
-  } else {
-    return false;
-  }
-}
-
-//  Change the hiddenWord - Updates the HTML
-function updateHiddenWord(userGuess) {
-  if (userGuess !== " ") {
-    //  Split the hiddenWord into an array split by spaces
-    hiddenWordArray = hiddenWord.split(" ");
-    for (var i = 0; i < word.length; i++) {
-      if (userGuess === word[i]) {
-        //  In position i replace 1 array element and replace with userGuess
-        hiddenWordArray.splice(i, 1, userGuess);
-      }
-    }
-    //  Join the array and separate by spaces
-    hiddenWord = hiddenWordArray.join(" ");
-    //  Couldn't think of an alternative so I used the regular expression to replace all double spaces to display in the HTML page correctly.
-    hiddenWordDisplayed = hiddenWord.replace(
-      new RegExp("  ", "gi"),
-      "&nbsp;&nbsp;&nbsp;"
-    );
-    hiddenWordHTML.innerHTML = hiddenWordDisplayed;
-  }
-}
-
-//  Update the remaining guesses - updates remainingGuesses and updates the HTML
-function decreaseRemainingGuesses() {
-  remainingGuesses--;
-  remainingGuessesHTML.innerHTML = "Remaining Guesses: " + remainingGuesses;
-  messageHTML.innerHTML =
-    "<h3>Sorry, that letter is not in the word. Please try again.<h5>";
-}
-
-//  Check if word is complete - Returns true or false
-function wordIsComplete() {
-  if (hiddenWord.indexOf("-") === -1) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-//  Check if remainingGuesses === 0 and wordIsComplete - Return true or false
-function isGameOver() {
-  if (remainingGuesses === 0 || wordIsComplete()) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-//  Show you lose splash screen and hit any key to begin
-function showYouLose() {
-  losses++;
-  lossesHTML.innerHTML = "Losses: " + losses;
-  messageHTML.innerHTML = "<h3>You Lose! Press 'new game'</h3>";
-}
-
-//  Show you win splash screen and hit any key to begin
-function showYouWin() {
-  wins++;
-  winsHTML.innerHTML = "Wins: " + wins;
-  messageHTML.innerHTML = "<h3>You Win! Congratulations!</h3>";
-}

@@ -21,7 +21,6 @@ footer {
     height: 50px;
     border-top: solid white 2px;
     font-size: 10px;
-
 }
 
 .btn {
@@ -34,7 +33,7 @@ footer {
     font-family: 'VT323', monospace;
 }
 
-.word,  .message {
+.word {
     height: 150px;
 }
 
@@ -42,6 +41,6 @@ footer {
     height: 70px;
 }
 
-.scoreboard {
+.message, .scoreboard {
     height: 80px;
 }
