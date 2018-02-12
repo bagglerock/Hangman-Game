@@ -8,6 +8,8 @@ var messageHTML = document.getElementById("message");
 var embedHTML = document.getElementById("embed");
 var startButton = document.getElementById("start");
 var resetButton = document.getElementById("reset-button");
+var userGuess; //  The letter that was pressed as represented by the key
+var spacer = "&nbsp;&nbsp;&nbsp;";
 var musicians = [
   {
     name: "Dave Matthews Band",
@@ -75,21 +77,49 @@ var musicians = [
   }
 ];
 
-//  Lost Variables
-var userGuess; //  The letter that was pressed as represented by the key
-var word; //  The word that was selected
-var hiddenWord; //  The word represented by "-"'s
-
 //  Objects
 var hangman = {
   wins: 0,
   losses: 0,
   remainingGuesses: 10,
+  lettersGuessed : [],
   word: "",
   hiddenWord: "",
-  hasBeenGuessed: function(userGuess) {
-    for (var i = 0; i < lettersGuessed.length; i++) {
-      if (userGuess === lettersGuessed[i]) {
+  hiddenWordDisplayed : "",
+  songLink : "",
+  initialize : function () {
+    //  Generate a random number
+    var randomNumber = Math.floor(Math.random() * musicians.length);
+    //  Set the word & a link to the song for embed
+    this.word = musicians[randomNumber].name.toLowerCase();
+    this.songLink = musicians[randomNumber].link;
+    //  Empty the hidden word and set it.  Does it by setting "- " for every letter and a space for the space
+    this.hiddenWord = "";
+    for (var i = 0; i < this.word.length; i++) {
+      if (this.word[i] !== " ") {
+        this.hiddenWord = this.hiddenWord + "- ";
+      } else {
+        this.hiddenWord = this.hiddenWord + " ";
+      }
+    }
+    //  Because HTML doesn't display double spacing I had to write this to accomodate the look on the page with this
+    this.hiddenWordDisplayed = this.hiddenWord.replace(
+      new RegExp("  ", "gi"), spacer);
+    //  Re initiate the game variables
+    this.remainingGuesses = 10;
+    this.lettersGuessed = [];
+    //  Update the HTML with the new data
+    winsHTML.innerHTML = "Wins: " + this.wins;
+    lossesHTML.innerHTML = "Losses: " + this.losses;
+    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + this.remainingGuesses;
+    hiddenWordHTML.innerHTML = this.hiddenWordDisplayed;
+    lettersGuessedHTML.innerHTML = "Letters Guessed: ";
+    messageHTML.innerHTML = "<h3>Game Started. Press a letter to continue.</h3>";
+    //embedHTML.innerHTML = "<iframe src='" + this.songLink + "' width='300' height='380' frameborder='1' allowtransparency='true'></iframe><br><p>OK, too much of a hint.</p>";
+  },
+  hasBeenGuessed : function (userGuess) {
+    for (var i = 0; i < this.lettersGuessed.length; i++) {
+      if (userGuess === this.lettersGuessed[i]) {
         //  Returns true of the userGuess is in the array and updates data on the HTML
         messageHTML.innerHTML =
           "<h3>This letter has been guessed already.  Please try again.</h3>";
@@ -97,13 +127,13 @@ var hangman = {
       }
     }
   },
-  addToLettersGuessed: function (userGuess) {
-    lettersGuessed.push(userGuess);
+  addToLettersGuessed : function (userGuess) {
+    this.lettersGuessed.push(userGuess);
     //  adds the letter guessed into the array and updates data on the HTML
-    lettersGuessedHTML.innerHTML = "Letters Guessed: " + lettersGuessed;
+    lettersGuessedHTML.innerHTML = "Letters Guessed: " + this.lettersGuessed;
   },
-  wordContains: function (userGuess) {
-    if (word.indexOf(userGuess) > -1) {
+  wordContains : function (userGuess) {
+    if (this.word.indexOf(userGuess) > -1) {
       messageHTML.innerHTML = "<h3>Good Job! This letter is in this word</h3>";
       return true;
     } else {
@@ -113,36 +143,78 @@ var hangman = {
   updateHiddenWord : function (userGuess) {
     if (userGuess !== " ") {
       //  Split the hiddenWord into an array split by spaces
-      hiddenWordArray = hiddenWord.split(" ");
-      for (var i = 0; i < word.length; i++) {
-        if (userGuess === word[i]) {
+      var hiddenWordArray = this.hiddenWord.split(" ");
+      for (var i = 0; i < this.word.length; i++) {
+        if (userGuess === this.word[i]) {
           //  In position i replace 1 array element and replace with userGuess
           hiddenWordArray.splice(i, 1, userGuess);
         }
       }
       //  Join the array and separate by spaces
-      hiddenWord = hiddenWordArray.join(" ");
+      this.hiddenWord = hiddenWordArray.join(" ");
       //  Couldn't think of an alternative so I used the regular expression to replace all double spaces to display in the HTML page correctly.
-      hiddenWordDisplayed = hiddenWord.replace(
-        new RegExp("  ", "gi"),
-        "&nbsp;&nbsp;&nbsp;"
-      );
-      hiddenWordHTML.innerHTML = hiddenWordDisplayed;
+      this.hiddenWordDisplayed = this.hiddenWord.replace(
+        new RegExp("  ", "gi"), spacer);
+      hiddenWordHTML.innerHTML = this.hiddenWordDisplayed;
     }
   },
   decreaseRemainingGuesses : function () {
-    remainingGuesses--;
-    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + remainingGuesses;
+    this.remainingGuesses--;
+    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + this.remainingGuesses;
     messageHTML.innerHTML =
       "<h3>Sorry, that letter is not in the word. Please try again.<h5>";
   },
   wordIsComplete : function () {
-    if (hiddenWord.indexOf("-") === -1) {
+    if (this.hiddenWord.indexOf("-") === -1) {
       return true;
     } else {
       return false;
     }
+  },
+  isGameOver : function () {
+    if (this.remainingGuesses === 0 || this.wordIsComplete()) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  showYouLose : function () {
+    this.losses++;
+    lossesHTML.innerHTML = "Losses: " + this.losses;
+    messageHTML.innerHTML = "<h3>You Lose! Press 'new game'</h3>";
+  },
+  showYouWin : function () {
+    this.wins++;
+    winsHTML.innerHTML = "Wins: " + this.wins;
+    messageHTML.innerHTML = "<h3>You Win! Congratulations!</h3>";
   }
 };
 
 //  Script
+startButton.onclick = function() {
+    hangman.initialize();
+    startButton.innerHTML = "new game";
+};
+
+document.onkeyup = function(event) {
+    //  If the key stroke is between a-z then do stuff
+    if (event.keyCode >= 65 && event.keyCode <= 90 && hangman.isGameOver() !== true) {
+      //  toLowerCase might not be necessary anymore but leaving it anyway
+      userGuess = event.key.toLowerCase();
+      if (!hangman.hasBeenGuessed(userGuess)) {
+        hangman.addToLettersGuessed(userGuess);
+        if (hangman.wordContains(userGuess)) {
+            hangman.updateHiddenWord(userGuess);
+          if (hangman.wordIsComplete()) {
+            hangman.showYouWin();
+          }
+        } else {
+            hangman.decreaseRemainingGuesses();
+          if (hangman.isGameOver()) {
+            hangman.showYouLose();
+          }
+        }
+      }
+    }
+  };
+
