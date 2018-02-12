@@ -1,5 +1,7 @@
 body {
     background-color: rgb(1, 20, 1);
+    background-image: url("../images/oldcomputer.gif");
+    background-repeat: repeat;
 }
 
 header, main, footer {
