@@ -77,18 +77,17 @@ var musicians = [
   }
 ];
 
-
 //  Objects
 var hangman = {
   wins: 0,
   losses: 0,
   remainingGuesses: 10,
-  lettersGuessed : [],
+  lettersGuessed: [],
   word: "",
   hiddenWord: "",
-  hiddenWordDisplayed : "",
-  songLink : "",
-  initialize : function () {
+  hiddenWordDisplayed: "",
+  songLink: "",
+  initialize: function() {
     //  Generate a random number
     var randomNumber = Math.floor(Math.random() * musicians.length);
     //  Set the word & a link to the song for embed
@@ -105,19 +104,22 @@ var hangman = {
     }
     //  Because HTML doesn't display double spacing I had to write this to accomodate the look on the page with this
     this.hiddenWordDisplayed = this.hiddenWord.replace(
-      new RegExp("  ", "gi"), spacer);
+      new RegExp("  ", "gi"),
+      spacer
+    );
     //  Re initiate the game variables
     this.remainingGuesses = 10;
     this.lettersGuessed = [];
     //  Update the HTML with the new data
     winsHTML.innerHTML = "Wins: " + this.wins;
     lossesHTML.innerHTML = "Losses: " + this.losses;
-    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + this.remainingGuesses;
+    remainingGuessesHTML.innerHTML =
+      "Remaining Guesses: " + this.remainingGuesses;
     hiddenWordHTML.innerHTML = this.hiddenWordDisplayed;
     lettersGuessedHTML.innerHTML = "Letters Guessed: ";
     messageHTML.textContent = "Game Started. Press a letter to continue.";
   },
-  hasBeenGuessed : function (userGuess) {
+  hasBeenGuessed: function(userGuess) {
     for (var i = 0; i < this.lettersGuessed.length; i++) {
       if (userGuess === this.lettersGuessed[i]) {
         //  Returns true of the userGuess is in the array and updates data on the HTML
@@ -127,12 +129,12 @@ var hangman = {
       }
     }
   },
-  addToLettersGuessed : function (userGuess) {
+  addToLettersGuessed: function(userGuess) {
     this.lettersGuessed.push(userGuess);
     //  adds the letter guessed into the array and updates data on the HTML
     lettersGuessedHTML.innerHTML = "Letters Guessed: " + this.lettersGuessed;
   },
-  wordContains : function (userGuess) {
+  wordContains: function(userGuess) {
     if (this.word.indexOf(userGuess) > -1) {
       messageHTML.innerHTML = "Good Job! This letter is in this word";
       return true;
@@ -140,7 +142,7 @@ var hangman = {
       return false;
     }
   },
-  updateHiddenWord : function (userGuess) {
+  updateHiddenWord: function(userGuess) {
     if (userGuess !== " ") {
       //  Split the hiddenWord into an array split by spaces
       var hiddenWordArray = this.hiddenWord.split(" ");
@@ -154,68 +156,77 @@ var hangman = {
       this.hiddenWord = hiddenWordArray.join(" ");
       //  Couldn't think of an alternative so I used the regular expression to replace all double spaces to display in the HTML page correctly.
       this.hiddenWordDisplayed = this.hiddenWord.replace(
-        new RegExp("  ", "gi"), spacer);
+        new RegExp("  ", "gi"),
+        spacer
+      );
       hiddenWordHTML.innerHTML = this.hiddenWordDisplayed;
     }
   },
-  decreaseRemainingGuesses : function () {
+  decreaseRemainingGuesses: function() {
     this.remainingGuesses--;
-    remainingGuessesHTML.innerHTML = "Remaining Guesses: " + this.remainingGuesses;
+    remainingGuessesHTML.innerHTML =
+      "Remaining Guesses: " + this.remainingGuesses;
     messageHTML.textContent =
       "Sorry, that letter is not in the word. Please try again.";
   },
-  wordIsComplete : function () {
+  wordIsComplete: function() {
     if (this.hiddenWord.indexOf("-") === -1) {
       return true;
     } else {
       return false;
     }
   },
-  isGameOver : function () {
+  isGameOver: function() {
     if (this.remainingGuesses === 0 || this.wordIsComplete()) {
       return true;
     } else {
       return false;
     }
   },
-  showYouLose : function () {
+  showYouLose: function() {
     this.losses++;
     lossesHTML.innerHTML = "Losses: " + this.losses;
-    messageHTML.textContent = "You Lose! Press \"new game\"";
+    messageHTML.textContent = 'You Lose! Press "new game"';
   },
-  showYouWin : function () {
+  showYouWin: function() {
     this.wins++;
     winsHTML.innerHTML = "Wins: " + this.wins;
     messageHTML.textContent = "You Win! Congratulations!";
-    embedHTML.innerHTML = "<iframe src='" + this.songLink + "' width='300' height='390' frameborder='1' allowtransparency='true'></iframe>";
+    embedHTML.innerHTML =
+      "<iframe src='" +
+      this.songLink +
+      "' width='300' height='390' frameborder='1' allowtransparency='true'></iframe>";
   }
 };
 
 //  Script
 startButton.onclick = function() {
-    hangman.initialize();
-    startButton.innerHTML = "new game";
+  hangman.initialize();
+  startButton.innerHTML = "new game";
 };
 
 document.onkeyup = function(event) {
-    //  If the key stroke is between a-z then do stuff
-    if (event.keyCode >= 65 && event.keyCode <= 90 && hangman.isGameOver() !== true) {
-      //  toLowerCase might not be necessary anymore but leaving it anyway
-      userGuess = event.key.toLowerCase();
-      if (!hangman.hasBeenGuessed(userGuess)) {
-        hangman.addToLettersGuessed(userGuess);
-        if (hangman.wordContains(userGuess)) {
-            hangman.updateHiddenWord(userGuess);
-          if (hangman.wordIsComplete()) {
-            hangman.showYouWin();
-          }
-        } else {
-            hangman.decreaseRemainingGuesses();
-          if (hangman.isGameOver()) {
-            hangman.showYouLose();
-          }
+  //  If the key stroke is between a-z then do stuff
+  if (
+    event.keyCode >= 65 &&
+    event.keyCode <= 90 &&
+    hangman.isGameOver() !== true
+  ) {
+    //  toLowerCase might not be necessary anymore but leaving it anyway
+    userGuess = event.key.toLowerCase();
+    if (!hangman.hasBeenGuessed(userGuess)) {
+      hangman.addToLettersGuessed(userGuess);
+      if (hangman.wordContains(userGuess)) {
+        hangman.updateHiddenWord(userGuess);
+        if (hangman.wordIsComplete()) {
+          hangman.showYouWin();
+        }
+      } else {
+        hangman.decreaseRemainingGuesses();
+        if (hangman.isGameOver()) {
+          hangman.showYouLose();
         }
       }
     }
-  };
-
+  }
+};
