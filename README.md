@@ -1,5 +1,5 @@
 # Hangman-Game
-Hangman game - Assignment 3
+Hangman game
 
 
 This is a little game made using HTML, CSS, and Javascript.  There is a small embed to play a song in a small window with Spotify.   
